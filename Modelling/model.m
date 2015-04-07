@@ -16,9 +16,9 @@ function  X = model(u)
 
 	% The torques
 	WT =  w1 - w2 + w3 - w4;
-	T_th = L * k( -w2^2 + w4^2);
-	T_ph = L * k( -w1^2 + w3^2);
-	T_ps = b(w1^2 + w2^2 + w3^2 + w4^2);
+	T_th = L * k * ( -w2^2 + w4^2);
+	T_ph = L * k * ( -w1^2 + w3^2);
+	T_ps = b * (w1^2 + w2^2 + w3^2 + w4^2);
 
 	% Rotations matrix (body frame -> inertial frame)
 	R_TB = (T/m) * [cos(ps) * sin(th) * cos(ph) + sin(ps) * sin(ph); ...
