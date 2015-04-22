@@ -15,7 +15,7 @@ t = [tx; ty; tz];
 
 W = [wx; wy; wz];
 
-OmegaD = -inv(I)*(cross(W, I*W) + t);
+OmegaD = inv(I)*(-cross(W, I*W) + t);
 
 T = [1, 0, -sin(p);
      0, cos(r), cos(p)*sin(r);
