@@ -63,35 +63,32 @@ Iy= 0.14e-6;
 Iz= 0.217e-6;
 A= eval(As);
 B= eval(Bs);
-C= [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
+C= [0 0 1 0 0 0; 0 0 0 1 0 0; 0 0 0 0 1 0];
 D= [ 0 0 0 ; 0 0 0 ; 0 0 0 ];
 clear As Bs  pd rd yd  Ix Iy Iz wx wy wz tx ty tz p r y beta betad Omega ...
     OmegaD W  x y0 wx0 wy0 wz0 f I n p0 r0 k T tz0 tx0 ty0 t 
 
 
 
-%% Make discrete time state space model
+    
+   %% 
+%%LQR controller
+%Ya rate controll 
 
-    sys = ss(A,B,C,D); % discrete time
- 
-    
-    
-    
-%% 
-%LQR for the total system
+Aa=  A(:,1:5); 
+Aa=  Aa(1:5,:); 
+Bb= B(1:5,:);
+Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 
-q = 0.1*[1,1,1,1,1,1];
+ q = 0.1*[0,0,1,1,0.1];
 r= 1e9*[ 1 1 1];
 Qu=diag(r);
 Qx = diag(q);
-[K,S,E] = lqr(sys,Qx,Qu) ;
-K
-E
-Kr = -inv(sys.c*inv(sys.a-sys.b*K-eye(6))*sys.b) 
+C = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
+    [Kk,Ss,Ee] = lqr(Aa,Bb,Qx,Qu) 
     
-    
-    
+    Kr = -inv(Cc*inv(Aa-Bb*Kk-eye(5))*Bb)  
 
 
 
