@@ -132,9 +132,9 @@ Q(5,5)= Q(5,5)*1e12;
 
  Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-    [K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
+[K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
     
-    Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4))  ;
+Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4))  ;
     
     
     
