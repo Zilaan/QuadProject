@@ -81,7 +81,7 @@ sys = ss(A,B,C,0);
     %%
     %Check controllability
     co = ctrb(sys);
-controllability = rank(co)
+controllability = rank(co);
  %% 
 %%LQR controller roll pitch yaw
 %Weights
@@ -140,29 +140,32 @@ Q(5,5)= Q(5,5)*1e12;
     
     
     
+    %%
+    %discrete
+     ts= 1e-3; 
+    sysD= ss(A,B,eye(6),0,ts);
+    sys= ss(A,B,eye(6),0);
+   
+    sysd= ss(Aa,Bb,Cc,0,ts);
+   
     
     
-    
-    
-    
+  r= 1*[ 1 1 1 1];
+Rd=diag(r);
+Qd  = (Cc'*Cc); 
+Qd(3,3)= Q(3,3)*1e5; 
+Qd(4,4)= Q(4,4)*1e12; 
+Qd(5,5)= Q(5,5)*1e12; 
 
-% %%
-% %%LQR controller
-% %Ya rate controll 
-% 
-% Aa=  A(:,1:5); 
-% Aa=  Aa(1:5,:); 
-% Bb= B(1:5,:);
-% Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
-% 
-%  q = 0.1*[0,0,1,1,0.1];
-% r= 1e9*[ 1 1 1];
-% Qu=diag(r);
-% Qx = diag(q);
-% C = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
-% 
-%     [Kk,Ss,Ee] = lqr(Aa,Bb,Qx,Qu) 
-%     
-%     Kr = -inv(Cc*inv(Aa-Bb*Kk-eye(5))*Bb)  
-% 
-
+[Kd,Ssd,Eed] = dlqr(sysd.a,sysd.b,Qd,Rd) ;
+    
+    Krd = -inv(Cc*inv(sysd.a-sysd.b*Kd-eye(5))*sysd.b(:,2:4))  ;
+    
+    
+    
+    
+step(sysD)
+figure
+step(sys)
+    
+    
