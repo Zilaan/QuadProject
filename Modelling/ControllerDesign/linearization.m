@@ -123,46 +123,37 @@ Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 
 r= 1*[ 1 1 1 1];
 R=diag(r);
-Q  = (Cc'*Cc); 
+Q = (Cc'*Cc); 
 R=diag(r);
 Q(3,3)= Q(3,3)*1e5; 
 Q(4,4)= Q(4,4)*1e12; 
 Q(5,5)= Q(5,5)*1e12; 
 
 
- Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
+Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-    [K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
+[K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
     
-    Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4))  ;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4))  ;
 
-% %%
-% %%LQR controller
-% %Ya rate controll 
-% 
-% Aa=  A(:,1:5); 
-% Aa=  Aa(1:5,:); 
-% Bb= B(1:5,:);
-% Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
-% 
-%  q = 0.1*[0,0,1,1,0.1];
-% r= 1e9*[ 1 1 1];
-% Qu=diag(r);
-% Qx = diag(q);
-% C = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
-% 
-%     [Kk,Ss,Ee] = lqr(Aa,Bb,Qx,Qu) 
-%     
-%     Kr = -inv(Cc*inv(Aa-Bb*Kk-eye(5))*Bb)  
-% 
+
+%%
+%%LQR controller
+%Ya rate controll 
+
+Aa=  A(:,1:5);
+Aa=  Aa(1:5,:);
+Bb= B(1:5,:);
+Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
+
+q = 0.1*[0,0,1,1,0.1];
+r= 1e9*[ 1 1 1];
+Qu=diag(r);
+Qx = diag(q);
+C = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
+
+[Kk,Ss,Ee] = lqr(Aa,Bb,Qx,Qu)
+
+Kr = -inv(Cc*inv(Aa-Bb*Kk-eye(5))*Bb)
+
 

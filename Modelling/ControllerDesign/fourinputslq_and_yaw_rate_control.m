@@ -167,5 +167,47 @@ Qd(5,5)= Q(5,5)*1e12;
 step(sysD)
 figure
 step(sys)
+
+
+%%
+clc
+g = 0.1;
+
+clear vars lin_vel lin_ang nonlin_ang nonlin_vel t ref
+
+sim('fourinputslq_and_yaw_rate_control_sim.slx');
+
+nonlin_ang = squeeze(nonlin_ang);
+nonlin_vel = squeeze(nonlin_vel);
+
+%%
+
+
+figure(1)
+clf
+hold on
+title('Non linear and linear simulation of pitch');
+plot(t, lin_ang(:, 1), '--');
+plot(t, nonlin_ang(1, :));
+plot(t, ref(:, 1),'--');
+legend('Linear', 'Non linear', 'Reference');
+
+figure(2)
+clf
+hold on
+title('Non linear and linear simulation of pitch');
+plot(t, lin_ang(:, 1), '--');
+plot(t, nonlin_ang(1, :));
+plot(t, ref(:, 1),'--');
+legend('Linear', 'Non linear', 'Reference');
+
+figure(3)
+clf
+hold on
+title('Non linear and linear simulation of pitch');
+plot(t, lin_ang(:, 1), '--');
+plot(t, nonlin_ang(1, :));
+plot(t, ref(:, 1),'--');
+legend('Linear', 'Non linear', 'Reference');
     
     
