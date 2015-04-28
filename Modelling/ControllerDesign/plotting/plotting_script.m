@@ -76,57 +76,56 @@ C = [1, 0, 0, 0, 0, 0;
 co = ctrb(A, B);
 controllability = rank(co);
 
-
-
-
     
 %% 
 %  LQR controller yaw rate, roll pitch 
 %  Yaw rate controll 
 
-Aa =  A(:,1:5); 
-Aa =  Aa(1:5,:); 
-Bb = B(1:5,:);
-Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
+Aa = A(:, 1:5); 
+Aa = Aa(1:5, :); 
+Bb = B(1:5, :);
 
 
+%%
 r = 1*[1, 1, 1];
-Q = (Cc'*Cc);
+Q = eye(5);
 R = diag(r);
 Q(3,3) = Q(3,3)*1e5; 
 Q(4,4) = Q(4,4)*1e12; 
 Q(5,5) = Q(5,5)*1e12; 
 
+[K,Ss,Ee] = lqr(Aa,Bb,Q,R);
+clc
 
-Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
+Cc = [0, 0, 1, 0, 0;
+      0, 0, 0, 1, 0;
+      0, 0, 0, 0, 1];
 
-[K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
-    
-Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4));
-% Kr = -inv(C*inv(A-B*K)*B(:,2:4));
+
+Kr = -inv(Cc*inv(Aa-Bb*K)*Bb);
 
 
 %%  Plotting
-clc
-g = 0.1;
-
-clear vars lin_vel lin_ang nonlin_ang nonlin_vel t ref
-
-sim('fourinputslq_and_yaw_rate_control_sim.slx');
-
-nonlin_ang = squeeze(nonlin_ang);
-nonlin_vel = squeeze(nonlin_vel);
-
-%%
-
-
-figure(1)
-clf
-hold on
-title('Non linear and linear simulation of pitch');
-plot(t, lin_ang(:, 1), '--');
-plot(t, nonlin_ang(1, 1, :));
-plot(t, ref(:, 1),'--');
-legend('Linear', 'Non linear', 'Reference');
-    
+% clc
+% g = 0.1;
+% 
+% clear vars lin_vel lin_ang nonlin_ang nonlin_vel t ref
+% 
+% sim('plotting_sim.slx');
+% 
+% nonlin_ang = squeeze(nonlin_ang);
+% nonlin_vel = squeeze(nonlin_vel);
+% 
+% %%
+% 
+% 
+% figure(1)
+% clf
+% hold on
+% title('Non linear and linear simulation of pitch');
+% plot(t, lin_ang(:, 1), '--');
+% plot(t, nonlin_ang(1, 1, :));
+% plot(t, ref(:, 1),'--');
+% legend('Linear', 'Non linear', 'Reference');
+%     
     
