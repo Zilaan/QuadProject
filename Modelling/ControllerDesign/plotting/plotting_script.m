@@ -100,32 +100,37 @@ clc
 Cc = [0, 0, 1, 0, 0;
       0, 0, 0, 1, 0;
       0, 0, 0, 0, 1];
+Cs = [1, 0, 0, 0, 0, 0;
+      0, 1, 0, 0, 0, 0;
+      0, 0, 1, 0, 0, 0;
+      0, 0, 0, 1, 0, 0;
+      0, 0, 0, 0, 1, 0;
+      0, 0, 0, 0, 0, 0;];
 
-
-Kr = -inv(Cc*inv(Aa-Bb*K)*Bb);
+Kr = (-inv(Cc*inv(Aa-Bb*K)*Bb))';
 
 
 %%  Plotting
-% clc
-% g = 0.1;
-% 
-% clear vars lin_vel lin_ang nonlin_ang nonlin_vel t ref
-% 
-% sim('plotting_sim.slx');
-% 
-% nonlin_ang = squeeze(nonlin_ang);
-% nonlin_vel = squeeze(nonlin_vel);
-% 
-% %%
-% 
-% 
-% figure(1)
-% clf
-% hold on
-% title('Non linear and linear simulation of pitch');
-% plot(t, lin_ang(:, 1), '--');
-% plot(t, nonlin_ang(1, 1, :));
-% plot(t, ref(:, 1),'--');
-% legend('Linear', 'Non linear', 'Reference');
-%     
+clc
+g = 0.1;
+
+clear vars lin_vel lin_ang nonlin_ang nonlin_vel t ref
+
+sim('plotting_sim.slx');
+
+nonlin_ang = squeeze(nonlin_ang);
+nonlin_vel = squeeze(nonlin_vel);
+
+%%
+
+
+figure(1)
+clf
+hold on
+title('Non linear and linear simulation of pitch');
+plot(t, lin_ang(:, 1), '--');
+plot(t, nonlin_ang(1, 1, :));
+plot(t, ref(:, 1),'--');
+legend('Linear', 'Non linear', 'Reference');
+    
     
