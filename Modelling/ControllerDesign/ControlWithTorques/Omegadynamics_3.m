@@ -1,42 +1,92 @@
 
 
 
-function  X= Betadynamics(u)
+function  X= Omegadynamics_3(u)
 
 
 omega= u(1:3,:); 
-beta= u(4:6,:);
+
+T_th= u(5);
+T_ph= u(4);
+T_ps= u(6);
+
+% beta= u(4:6,:); 
+% w1= u(4);
+% w2= u(5);
+% w3= u(6);
+% w4= u(7);
+
+% omega,beta, w1,w2,w3,w4
+
+Ix = 0.14e-6; 
+Iy= 0.14e-6; 
+Iz= 0.217e-6;
+L=  0.046;
+k= 2.75e-11;
+b=1e-9;
+% m=26e-3; 
+% ir= 1;
+% g=9.81;
+
+
+I = diag([Ix, Iy, Iz]);
 
 
 
 
 
+% 
+% ph= q(1); 
+% th=q(2);
+% ps=q(3);
+% 
+% 
+% 
+% ph_dot= qdot(1);
+% th_dot= qdot(2);
+% ps_dot= qdot(3);
+% 
+% 
+% w1= f(1); 
+% w2= u(2); 
+% w3= u(3); 
+% w4= u(4); 
 
 
 
 
 
-
-r=beta(1);
-p=beta(2);
-y=beta(2);
-
+% r=beta(1);
+% p=beta(2);
+% y=beta(2);
 
 
 
+% T_th= L*k*(w2+ w3-w1 -w4);
+% T_ph=L*k*(w3+ w4-w1 -w2);
+% T_ps= b*(w1-w2+w3-w4);
 
 
 
 
+% % WT=  w1-w2+w3-w4;
+% T_th= L*k*(w2^2+ w3^2-w1^2 -w4^2);
+% T_ph=L*k*(w3^2+ w4^2-w1^2 -w2^2);
+% T_ps= b*(w1^2-w2^2+w3^2-w4^2);
+% % T= k*(w1^2+w2^2+w3^2+w4^2); 
 
 
-T = [1, 0, -sin(p);
-     0, cos(r), cos(p)*sin(r);
-     0, -sin(r), cos(p)*cos(r)];
+t = [T_ph ; T_th; T_ps];
 
-betad = inv(T)*omega;
+Omegad = inv(I)*(-cross(omega, I*omega) + t);
 
- X= betad;
+% T = [1, 0, -sin(p);
+%      0, cos(r), cos(p)*sin(r);
+%      0, -sin(r), cos(p)*cos(r)];
+% 
+% betad = inv(T)*omega;
+
+ X= Omegad;
 
 % R_TB= (T/m)*[  cos(ps)*sin(th)*cos(ph)+sin(ps)*sin(ph); ...
 %               sin(ps)*sin(th)*cos(ph)- cos(ps)*sin(ph); ...
