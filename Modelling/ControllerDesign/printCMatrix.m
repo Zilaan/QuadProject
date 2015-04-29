@@ -19,7 +19,7 @@ for i = 1:m
     if i == m
         s = [s, '}'];
     else
-        s = [s, '}, '];
+        s = [s, '},\n'];
     end
 end
 s = [s, '};'];
