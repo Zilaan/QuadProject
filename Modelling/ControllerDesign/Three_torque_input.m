@@ -1,18 +1,23 @@
-
 %%
 % %
-% LQ control with the four PWV  generated using state feedback
+% LQ control with the three control torque generated using state feedback
 
 
 
+
+
+
+
+%
 
 
 %%
+%LInearization
 
-% linerization
 clc, clear
 
-syms Ix Iy Iz wx wy wz tx ty tz p r y w1 w2 w3 w4 t1 L k b
+
+syms Ix Iy Iz wx wy wz tx ty tz p r y w1 w2 w3 w4 t1 L k b T_ph T_th T_ps
 syms pd rd yd 
 
 % r = phi
@@ -23,13 +28,10 @@ beta = [r; p; y];
 betad = [rd; pd; yd];
 I = diag([Ix, Iy, Iz]);
 
-T_th= L*k*(w2+ w3-w1 -w4);
-T_ph=L*k*(w3+ w4-w1 -w2);
-T_ps= b*(w1-w2+w3-w4);
 
 
 t = [T_ph; T_th; T_ps];
-t1= [ w1; w2; w3; w4]; 
+
 
 W = [wx; wy; wz];
 
@@ -58,13 +60,15 @@ for k = 1:length(f) % A matrix
 end
 
 for k = 1:length(f) % A matrix
-    for n = 1:length(t1)
+    for n = 1:length(t)
         
-        Bs(k, n) = diff(f(k), t1(n));
+        Bs(k, n) = diff(f(k), t(n));
         
     end
 end
 
+%% 
+%Numerique evaluation using the known data
 wx =0; 
 wy=0;  wz=0;  r=0;  p=0;  y=0; 
 Ix = 0.14e-6; 
@@ -75,9 +79,8 @@ k= 2.75e-11;
 b=1e-9;
 A= eval(As);
 B= eval(Bs);
-% C= [0 0 1 0 0 0;0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
-C= [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
-% D= [ 0 0 0  ; 0 0 0 ; 0 0 0 ];
+C= eye(6); 
+D=0; 
 clear As Bs w1 w2 w3 w4   pd rd yd  Ix Iy Iz wx wy wz tx ty tz p r y beta betad Omega ...
     OmegaD W  x y0 wx0 wy0 wz0 f I n p0 r0 k T tz0 tx0 ty0 t 
 
@@ -90,55 +93,41 @@ sys = ss(A,B,C,0);
 
 
 
-    %%
-    %Check controllability
+ %%
+  %Check controllability
     co = ctrb(sys);
-controllability = rank(co);
-    
-    
-    
-    
-    
-    
-    
-    
-    
+controllability = rank(co)
+
+
+
   %% 
 % %%LQR controller yaw rate, roll pitch 
 % %Ya rate controll 
-% remove all traces of the yaw to control yaw rate
-
+% We must first remove any trace of the yaw to be able to control yaw rate
+% .... so we get a new system
  Aa=  A(:,1:5); 
  Aa=  Aa(1:5,:); 
 Bb= B(1:5,:);
-Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
+Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ]; %outputs to be used in the Reference tracking
 
 
-
-r= 1*[ 1 1 1 1];
+%%
+%weights
+r= 1e12*[ 1 1 1];
 R=diag(r);
-Q  = (Cc'*Cc); 
-R=diag(r);
-Q(3,3)= Q(3,3)*1e5;  %yaw rate
-Q(4,4)= Q(4,4)*1e12;  %roll
-Q(5,5)= Q(5,5)*1e12;  %pitch
+Q = (Cc'*Cc); 
+Q(3,3)= Q(3,3);  %  yaw rate weight
+Q(4,4)= Q(4,4); %  roll weight
+Q(5,5)= Q(5,5); %  pitch weight
 
-% selector matrix , to exclude the yaw from the closed loop system
- Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
+% Selector matrix to feedback only the 5 states without the yaw from the
+% complete model
+Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-[K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
+[K,S,E] = lqr(Aa,Bb,Q,R) ;
     
-Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4))  ; %refernce traking for yaw rate, roll and pitch 
-    
-    
-    
-    
-    
- 
-   
-    
-    
-  
+Kr = -inv(Cc*inv(Aa-Bb*K)*Bb) ; 
 
 
-    
+
+
