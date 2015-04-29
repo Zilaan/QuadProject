@@ -1,18 +1,7 @@
-%%
-% %
 % LQ control with the three control torque generated using state feedback
 
 
-
-
-
-
-
-%
-
-
-%%
-%LInearization
+% Linearization
 
 clc, clear
 
@@ -100,19 +89,20 @@ controllability = rank(co)
 
 
 
-  %% 
-% %%LQR controller yaw rate, roll pitch 
-% %Ya rate controll 
+%%
+% LQR controller yaw rate, roll pitch 
+% Yaw rate controll 
 % We must first remove any trace of the yaw to be able to control yaw rate
 % .... so we get a new system
- Aa=  A(:,1:5); 
- Aa=  Aa(1:5,:); 
+Aa=  A(:,1:5);
+Aa=  Aa(1:5,:);
 Bb= B(1:5,:);
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ]; %outputs to be used in the Reference tracking
 
 
 %%
-%weights
+
+% Weights
 r= 1e12*[ 1 1 1];
 R=diag(r);
 Q = (Cc'*Cc); 
