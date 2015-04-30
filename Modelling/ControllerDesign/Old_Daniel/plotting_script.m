@@ -1,7 +1,8 @@
 clc, clear
 
 syms p q r phi theta psi phiDot thetaDot psiDot
-syms Ix Iy Iz L k b tx ty tz
+syms I_x I_y I_z L k b tx ty tz
+
 
 % roll = phi    (x-axis, facing forward) 
 % pitch = theta (y-axis, facing left)
@@ -14,7 +15,7 @@ syms Ix Iy Iz L k b tx ty tz
 W = [p; q; r];
 tau = [tx; ty; tz];
 
-I = diag([Ix, Iy, Iz]);
+I = diag([I_x, I_y, I_z]);
 
 OmegaD = I\(-cross(W, I*W) + tau);
 
@@ -53,9 +54,9 @@ theta = 0;
 phi = 0;
 psi = 0;
 
-Ix = 0.14e-6;   %  Inertia around x-axis (roll)
-Iy = 0.14e-6;   %  Inertia around y-axis (pitch)
-Iz = 0.217e-6;  %  Inertia around z-axis (yaw)
+I_x = 0.14e-6;   %  Inertia around x-axis (roll)
+I_y = 0.14e-6;   %  Inertia around y-axis (pitch)
+I_z = 0.217e-6;  %  Inertia around z-axis (yaw)
 L = 0.046;      %  Distance between rotors and axes
 k = 2.75e-11;   %  PWM to thrust
 b = 1e-9;       %  PWM to torque around yaw axis
