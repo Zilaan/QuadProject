@@ -56,6 +56,8 @@ for k = 1:length(f) % A matrix
     end
 end
 
+
+
 %% 
 %Numerique evaluation using the known data
 wx =0; 

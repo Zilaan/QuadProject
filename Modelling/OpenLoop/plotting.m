@@ -9,7 +9,7 @@ nonlin_ang = squeeze(nonlin_ang);
 lin_vel = lin_vel';
 lin_ang = lin_ang';
 t = t';
-ref = ref';
+input = input';
 
 p_nl = nonlin_vel(1, :);
 q_nl = nonlin_vel(2, :);
@@ -27,13 +27,11 @@ phi_l = lin_ang(1, :);
 theta_l = lin_ang(2, :);
 psi_l = lin_ang(3, :);
 
-r_ref = ref(1, :);
-phi_ref = ref(2, :);
-theta_ref = ref(3, :);
 
+p_in = input(1, :);
+q_in = input(2, :);
+r_in = input(3, :);
 
-
-%%
 
 
 
@@ -43,44 +41,57 @@ theta_ref = ref(3, :);
 figure(1)
 clf
 hold on
-title('Simulation of linear and nonlinear roll')
+
+subplot(3, 2, 1);
 plot(t, phi_l);
-plot(t, phi_nl, '--');
-plot(t, phi_ref);
-legend('Linear', 'Nonlinear', 'Reference');
+title('$\phi$', 'Interpreter', 'Latex')
 xlabel('Time [s]');
 ylabel('Angle [rad]');
-
-figure(2)
-clf
-hold on
-title('Simulation of linear and nonlinear pitch')
+subplot(3, 2, 3);
 plot(t, theta_l);
-plot(t, theta_nl, '--');
-plot(t, theta_ref);
-legend('Linear', 'Nonlinear', 'Reference');
+title('$\theta$', 'Interpreter', 'Latex')
+xlabel('Time [s]');
+ylabel('Angle [rad]');
+subplot(3, 2, 5);
+plot(t, psi_l);
+title('$\psi$', 'Interpreter', 'Latex')
 xlabel('Time [s]');
 ylabel('Angle [rad]');
 
+% figure(2)
+% clf
+% hold on
+subplot(3, 2, 2);
+plot(t, phi_nl);
+xlabel('Time [s]');
+ylabel('Angle [rad]');
+title('$\phi$', 'Interpreter', 'Latex')
+subplot(3, 2, 4);
+plot(t, theta_nl);
+xlabel('Time [s]');
+ylabel('Angle [rad]');
+title('$\theta$', 'Interpreter', 'Latex')
+subplot(3, 2, 6);
+plot(t, psi_nl);
+xlabel('Time [s]');
+ylabel('Angle [rad]');
+title('$\psi$', 'Interpreter', 'Latex')
 
 figure(3)
 clf
 hold on
-title('Simulation of linear and nonlinear yaw rate')
-plot(t, r_l);
-plot(t, r_nl, '--');
-plot(t, r_ref);
-legend('Linear', 'Nonlinear', 'Reference');
+subplot(3, 1, 1);
+plot(t, p_in);
 xlabel('Time [s]');
-ylabel('Angular velocity [rad/s]');
-
-figure(4)
-clf
-hold on
-title('Simulation of linear and nonlinear yaw')
-plot(t, psi_l);
-plot(t, psi_nl, '--');
-plot(t, r_ref);
-legend('Linear', 'Nonlinear', 'Reference for yaw rate');
+ylabel('Torque [Nm]');
+title('$\tau_p$', 'Interpreter', 'Latex')
+subplot(3, 1, 2);
+plot(t, q_in);
 xlabel('Time [s]');
-ylabel('Angular velocity [rad/s]');
+ylabel('Torque [Nm]');
+title('$\tau_q$', 'Interpreter', 'Latex')
+subplot(3, 1, 3);
+plot(t, r_in);
+xlabel('Time [s]');
+ylabel('Torque [Nm]');
+title('$\tau_r$', 'Interpreter', 'Latex')

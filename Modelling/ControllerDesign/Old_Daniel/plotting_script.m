@@ -43,6 +43,8 @@ for k = 1:length(f)  % A matrix
     end
 end
 
+%%
+
 p = 0;
 q = 0;
 r = 0;
