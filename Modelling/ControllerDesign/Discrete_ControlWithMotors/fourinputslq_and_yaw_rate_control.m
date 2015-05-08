@@ -100,13 +100,13 @@ Bb = sysd.b(1:5,:);
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 
 
-phi = 1*[ 1 1 1 1];
+phi = 0.01*[ 1 1 1 1];
 R = diag(phi);
 Q = (Cc'*Cc); 
 R = diag(phi);
-Q(3,3) = Q(3,3)*1e9;  % Yaw rate
-Q(4,4) = Q(4,4)*1e12;  % Roll
-Q(5,5) = Q(5,5)*1e12;  % Pitch
+Q(3,3) = Q(3,3)*1e7;  % Yaw rate
+Q(4,4) = Q(4,4)*1e17;  % Roll
+Q(5,5) = Q(5,5)*1e17;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
