@@ -90,12 +90,13 @@ co = ctrb(sys);
 controllability = rank(co);
 
 
-%% LQR controller yaw rate, roll pitch
+%% Discrete LQR controller yaw rate, roll pitch
 % Remove all traces of the yaw to control yaw rate
-
-Aa =  A(:,1:5);
+ts=1/250;
+sysd = c2d(sys,ts); 
+Aa =  sysd.a(:,1:5);
 Aa =  Aa(1:5,:); 
-Bb = B(1:5,:);
+Bb = sysd.b(1:5,:);
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 
 
@@ -103,14 +104,15 @@ phi = 1*[ 1 1 1 1];
 R = diag(phi);
 Q = (Cc'*Cc); 
 R = diag(phi);
-Q(3,3) = Q(3,3)*1e5;  % Yaw rate
+Q(3,3) = Q(3,3)*1e9;  % Yaw rate
 Q(4,4) = Q(4,4)*1e12;  % Roll
 Q(5,5) = Q(5,5)*1e12;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-[K,Ss,Ee] = lqr(Aa,Bb,Q,R) ;
+[Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R) ;
     
-Kr = -inv(Cc*inv(Aa-Bb*K)*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
-
+Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
+Kr_d 
+Kd
