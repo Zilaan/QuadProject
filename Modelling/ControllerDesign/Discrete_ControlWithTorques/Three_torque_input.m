@@ -107,4 +107,26 @@ Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 Kr = -inv(Cc*inv(Aa-Bb*K)*Bb) ; 
 
 
+%% Discrete LQ
+
+%  sys = ss(A,B,C,0); 
+ts = 1/250;
+
+sysd = c2d(sys,ts);
+
+
+
+Aa = A(:,1:5);
+Aa = Aa(1:5,:);
+Bb = B(1:5,:);
+Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ]; %outputs to be used in the Reference tracking
+
+
+% Rd = diag(phi);
+% Qd = (Cc'*Cc); 
+% Qd(3,3) = Qd(3,3);  %  yaw rate weight
+% Qd(4,4) = Qd(4,4);  %  roll weight
+% Qd(5,5) = Qd(5,5);  %  pitch weight
+% 
+% [Kd,Sd,Ed] = dlqr(sysd.a, sysd.b , Qd, Rd)
 
