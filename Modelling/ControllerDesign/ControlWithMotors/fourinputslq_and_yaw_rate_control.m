@@ -21,13 +21,13 @@ syms Ix Iy Iz phi theta psi tx ty tz p q r w1 w2 w3 w4 t1 L k b
 
 I = diag([Ix, Iy, Iz]);
 
-% T_th = L*k*(w2 + w3 - w1 - w4);   % Old incorrect model
-% T_ph = L*k*(w3 + w4 - w1 - w2);
+% T_ph = L*k*(w3 + w4 - w1 - w2);   % Old incorrect model
+% T_th = L*k*(w2 + w3 - w1 - w4);
 % T_ps = b*(w1 - w2 + w3 - w4);
 
 T_ph = L*k*(w3 + w4 - w1 - w2); % New correct model
 T_th = L*k*(w2 + w3 - w1 - w4);
-T_ps = b*(w1 - w2 + w3 - w4);
+T_ps = b*(-w1 + w2 - w3 + w4);
 
 t = [T_ph; T_th; T_ps];
 w = [w1; w2; w3; w4]; 

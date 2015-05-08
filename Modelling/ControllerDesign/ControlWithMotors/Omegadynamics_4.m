@@ -17,9 +17,13 @@ b = 1e-9;
 
 I = diag([Ix, Iy, Iz]);
 
-T_th = L*k*(w2+ w3-w1 -w4);
-T_ph = L*k*(w3+ w4-w1 -w2);
-T_ps = b*(w1-w2+w3-w4);
+% T_th = L*k*(w2+ w3-w1 -w4);   % Old model for simulation
+% T_ph = L*k*(w3+ w4-w1 -w2);
+% T_ps = b*(w1-w2+w3-w4);
+
+T_ph = L*k*(w3 + w4 - w1 - w2); % Matches crazyflie
+T_th = L*k*(w2 + w3 - w1 - w4);
+T_ps = b*(-w1 + w2 - w3 + w4);
 
 t = [T_ph ; T_th; T_ps];
 

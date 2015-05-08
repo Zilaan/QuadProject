@@ -53,7 +53,7 @@ for k = 1:length(f) % B matrix
     end
 end
 
-%% Numerique evaluation using the known data
+%% Numeric evaluation using the known data
 
 p = 0; q = 0; r = 0;
 phi = 0; theta = 0; psi = 0; 
@@ -105,4 +105,20 @@ Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 [K,S,E] = lqr(Aa,Bb,Q,R) ;
     
 Kr = -inv(Cc*inv(Aa-Bb*K)*Bb) ; 
+
+
+%% Discrete LQ
+
+% sys = ss(A,B,C,0); 
+ts = 1/250;
+
+sysd = c2d(sys, ts);
+
+Rd = diag(phi);
+Qd = (Cc'*Cc); 
+Qd(3,3) = Qd(3,3);  %  yaw rate weight
+Qd(4,4) = Qd(4,4);  %  roll weight
+Qd(5,5) = Qd(5,5);  %  pitch weight
+
+[Kd,Sd,Ed] = dlqr(sysd.a, sysd.b , Qd, Rd)
 
