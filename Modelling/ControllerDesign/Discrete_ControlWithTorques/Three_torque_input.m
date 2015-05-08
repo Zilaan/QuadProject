@@ -81,30 +81,6 @@ sys = ss(A,B,C,0);
 co = ctrb(sys);
 controllability = rank(co);
 
-%% LQR controller yaw rate, roll pitch 
-% We must first remove any trace of the yaw to be able to control yaw rate
-% .... so we get a new system
-
-Aa = A(:,1:5);
-Aa = Aa(1:5,:);
-Bb = B(1:5,:);
-Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ]; %outputs to be used in the Reference tracking
-
-% Weights
-phi = 1e12*[1 1 1];
-R = diag(phi);
-Q = (Cc'*Cc); 
-Q(3,3) = Q(3,3);  %  yaw rate weight
-Q(4,4) = Q(4,4); %  roll weight
-Q(5,5) = Q(5,5); %  pitch weight
-
-% Selector matrix to feedback only the 5 states without the yaw from the
-% complete model
-Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
-
-[K,S,E] = lqr(Aa,Bb,Q,R) ;
-    
-Kr = -inv(Cc*inv(Aa-Bb*K)*Bb) ; 
 
 
 %% Discrete LQ
@@ -114,19 +90,27 @@ ts = 1/250;
 
 sysd = c2d(sys,ts);
 
+% Selector matrix to feedback only the 5 states without the yaw from the
+% complete model
+Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
 
-Aa = A(:,1:5);
+Aa = sysd.a(:,1:5);
 Aa = Aa(1:5,:);
-Bb = B(1:5,:);
+Bb = sysd.b(1:5,:);
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ]; %outputs to be used in the Reference tracking
 
 
-% Rd = diag(phi);
-% Qd = (Cc'*Cc); 
-% Qd(3,3) = Qd(3,3);  %  yaw rate weight
-% Qd(4,4) = Qd(4,4);  %  roll weight
-% Qd(5,5) = Qd(5,5);  %  pitch weight
-% 
-% [Kd,Sd,Ed] = dlqr(sysd.a, sysd.b , Qd, Rd)
+phi = 1e11*[1 1 1];
+Qd = (Cc'*Cc);
+Rd = diag(phi);
+
+
+Qd(3,3) = 1*Qd(3,3);  %  yaw rate weight
+Qd(4,4) = Qd(4,4);  %  roll weight
+Qd(5,5) = Qd(5,5);  %  pitch weight
+
+[Kd,Sd,Ed] = dlqr(Aa, Bb, Qd, Rd);
+Kd
+Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb) 
 
