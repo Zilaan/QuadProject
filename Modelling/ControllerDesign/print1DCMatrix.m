@@ -1,4 +1,4 @@
-function out = printCMatrix(A)
+function out = print1DCMatrix(A)
 
 
 [m,n] = size(A);
@@ -6,7 +6,7 @@ function out = printCMatrix(A)
 s = sprintf('float K[] = {');
 
 for i = 1:m
-    s = [s, '{'];
+%     s = [s, '{'];
     for j = 1:n
         
         if j == 1
@@ -16,10 +16,13 @@ for i = 1:m
         end
         
     end
-    if i == m
-        s = [s, '}'];
-    else
-        s = [s, '},\n'];
+%     if i == m
+%         s = [s, '}'];
+%     else
+%         s = [s, '},\n'];
+%     end
+    if i ~= m
+        s = [s, ', '];
     end
 end
 s = [s, '};'];
