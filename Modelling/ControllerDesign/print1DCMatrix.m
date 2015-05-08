@@ -3,7 +3,7 @@ function out = print1DCMatrix(A)
 
 [m,n] = size(A);
 
-s = sprintf('K = {');
+s = sprintf('float K[] = {');
 
 for i = 1:m
 %     s = [s, '{'];
