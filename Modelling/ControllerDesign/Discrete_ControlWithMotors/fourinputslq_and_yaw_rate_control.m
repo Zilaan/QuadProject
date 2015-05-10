@@ -114,6 +114,10 @@ Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 [Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R) ;
     
 Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
-
-print1DCMatrix(Kr_d)
-print1DCMatrix(Kd)
+%% Compile and flush the Crazyflie code
+clc
+writeC(Kd, Kr_d);
+cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/
+system('./run.sh');
+cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/...
+    ControllerDesign/Discrete_ControlWithMotors/
