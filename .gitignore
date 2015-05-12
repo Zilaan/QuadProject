@@ -36,3 +36,4 @@
 *.m~
 tags
 *.vim
+*.autosave

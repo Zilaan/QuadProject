@@ -69,7 +69,7 @@ Ix = 0.14e-6;
 Iy = 0.14e-6;
 Iz = 0.217e-6;
 L =  0.046;
-k = 2.3499e-4;
+k = 2.3499e-9;
 b = 1e-9;
 A = eval(As);
 B = eval(Bs);
@@ -104,9 +104,9 @@ phi = 0.01*[ 1 1 1 1];
 R = diag(phi);
 Q = (Cc'*Cc); 
 R = diag(phi);
-Q(3,3) = Q(3,3)*1e7;  % Yaw rate
-Q(4,4) = Q(4,4)*1e17;  % Roll
-Q(5,5) = Q(5,5)*1e17;  % Pitch
+Q(3,3) = Q(3,3)*1e5;  % Yaw rate
+Q(4,4) = Q(4,4)*1e6;  % Roll
+Q(5,5) = Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
@@ -116,8 +116,7 @@ Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
 %% Compile and flush the Crazyflie code
 clc
-writeC(Kd, Kr_d);
+writeC(-Kd, Kr_d);
 cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/
 system('./run.sh');
-cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/...
-    ControllerDesign/Discrete_ControlWithMotors/
+cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
