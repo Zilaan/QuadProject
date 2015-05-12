@@ -106,11 +106,17 @@ Qd = (Cc'*Cc);
 Rd = diag(phi);
 
 
-Qd(3,3) = 1*Qd(3,3);  %  yaw rate weight
-Qd(4,4) = Qd(4,4);  %  roll weight
-Qd(5,5) = Qd(5,5);  %  pitch weight
+Qd(3,3) = 1e8*Qd(3,3);  %  yaw rate weight
+Qd(4,4) = 1e8*Qd(4,4);  %  roll weight
+Qd(5,5) = 1e8*Qd(5,5);  %  pitch weight
 
 [Kd,Sd,Ed] = dlqr(Aa, Bb, Qd, Rd);
+Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb);
 Kd
-Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb) 
-
+Kr_d
+%% Compile and flush the Crazyflie code
+clc
+writeC(-Kd, Kr_d);
+cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/
+system('./run.sh');
+cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithTorques/
