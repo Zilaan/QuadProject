@@ -106,21 +106,12 @@ clear As  w1 w2 w3 w4   pd rd yd  Ix Iy Iz wx wy wz tx ty tz p r y beta betad Om
 sys = ss(A,B,C,0);
 ts=1/250;
 
-sysd= c2d(sys,ts);
-
-    %%
-    %Check controllability
-    co = ctrb(sys);
+ %%
+ %Check controllability
+ co = ctrb(sys);
 controllability = rank(co);
 
 
-    
-    
-  n=2;   
-    
-    
-    
-    
     
   %% 
 % %%LQI controller yaw rate, roll pitch 
@@ -134,65 +125,46 @@ controllability = rank(co);
 Bb= sys.b(1:5,:);
 
 
-
- Aad=  sysd.a(:,1:5); 
- Aad=  Aad(1:5,:); 
-Bbd= sysd.b(1:5,:);
-
-
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-%%
-
-r= 1e-9*[ 1 1 1 1];
-R=diag(r);
-
- 
- 
  
  %%
 
- 
- sys1= ss(Aa, Bb, Cc,0);
+%Weights 
+%inputs  weight
+r= 1e-6 *[ 1 1 1 1]; 
+R=diag(r);
+
+%States weights
 Q= eye(8); 
 
-Q(1,1)= 0;  
+Q(1,1)= 0;    
 Q(2,2)= 0;
 
 Q(3,3)= Q(3,3)*0;  %yaw rate
 Q(4,4)= Q(4,4)*0;  %roll
 Q(5,5)= Q(5,5)*0;  %pitch
-
-Q(6,6)= 1;  
-Q(7,7)= 1000000;  
-Q(8,8)= 1000000;  
  
+Q(6,6)= 100;    %yaw rate
+Q(7,7)= 1e9;    %roll
+Q(8,8)= 1e9;   %pitch
+
+
+%%Augmented system
 Ai=[ Aa zeros(5,3); Cc zeros(3,3)]; 
 Bi= [Bb; zeros(3,4)];
 
 
-Aid=[ Aad zeros(5,3); Cc zeros(3,3)]; 
-Bid= [Bbd; zeros(3,4)];
 
 
-%%
-%continuous time
-[K,Ss,Ee] = lqr(Ai, Bi,Q,R,0) ;
-K
 
 
 %%
-% %Discrte time time
-
-% [Kd,Ss,Ee] = dlqr(,Q,R,0) ;
-% Kd
-
-
-
-    
-    
+% %Discrte time  LQI using the sampling time
+ [Kd,Ss,Ee] = lqrd(Ai,Bi, Q,R,ts) ;
+    Kd
 
 
 
