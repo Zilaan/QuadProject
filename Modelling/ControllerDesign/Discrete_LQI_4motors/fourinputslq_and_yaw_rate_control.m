@@ -76,18 +76,9 @@ b=1e-9;
 Iz= 0.217e-6;
 L=  0.046;
 k= 2.75e-11;
+k= 2.356e-4;
 
 
-% L=  0.046/sqrt(2);
-% k= 2.75e-9; 
-% 
-% 
-% 
-% Ix = 6.228e-3;
-% Iy = 6.228e-3;
-% Iz = 1.121e-2;
-% b= 1.0942e-7*(pi/30)^2; 
-% 
 
 
 A= eval(As);
@@ -102,99 +93,69 @@ clear As  w1 w2 w3 w4   pd rd yd  Ix Iy Iz wx wy wz tx ty tz p r y beta betad Om
 
 
 %%
-%make state space
-sys = ss(A,B,C,0);
+%sampling Time
+
 ts=1/250;
 
-sysd= c2d(sys,ts);
-
-    %%
-    %Check controllability
-    co = ctrb(sys);
-controllability = rank(co);
 
 
-    
-    
-  n=2;   
-    
-    
-    
-    
     
   %% 
 % %%LQI controller yaw rate, roll pitch 
 % %Ya rate controll 
 % remove all traces of the yaw to control yaw rate
 
-
- 
- Aa=  sys.a(:,1:5); 
+ Aa=  A(:,1:5); 
  Aa=  Aa(1:5,:); 
-Bb= sys.b(1:5,:);
-
-
-
- Aad=  sysd.a(:,1:5); 
- Aad=  Aad(1:5,:); 
-Bbd= sysd.b(1:5,:);
-
-
+Bb= B(1:5,:);
 Cc = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
+sysd= c2d(ss(Aa,Bb,eye(5),0),ts);
 
+
+%%Selection Matrice
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
+
+
+
+
 %%
+%augmented sys
 
-r= 1e-9*[ 1 1 1 1];
-R=diag(r);
+Aid=[ sysd.a  zeros(5,3); ts*Cc eye(3,3)]; 
+Bid= [sysd.b; zeros(3,4)];
 
- 
- 
+% xi[k+1] = xi[k] + h(Ci*x[k] - r)
+
+
+
  
  %%
 
- 
- sys1= ss(Aa, Bb, Cc,0);
+%Weights 
+%inputs  weight
+r= 1 *[ 1 1 1 1]; 
+R=diag(r);
+
+%States weights
 Q= eye(8); 
 
-Q(1,1)= 0;  
+Q(1,1)= 0;    
 Q(2,2)= 0;
 
 Q(3,3)= Q(3,3)*0;  %yaw rate
 Q(4,4)= Q(4,4)*0;  %roll
 Q(5,5)= Q(5,5)*0;  %pitch
-
-Q(6,6)= 1;  
-Q(7,7)= 1000000;  
-Q(8,8)= 1000000;  
  
-Ai=[ Aa zeros(5,3); Cc zeros(3,3)]; 
-Bi= [Bb; zeros(3,4)];
-
-
-Aid=[ Aad zeros(5,3); Cc zeros(3,3)]; 
-Bid= [Bbd; zeros(3,4)];
+Q(6,6)= 1e7;    %yaw rate
+Q(7,7)= 1e3;    %roll
+Q(8,8)= 1e3;   %pitch
 
 
 %%
-%continuous time
-[K,Ss,Ee] = lqr(Ai, Bi,Q,R,0) ;
-K
-
-
-%%
-% %Discrte time time
-
-% [Kd,Ss,Ee] = dlqr(,Q,R,0) ;
-% Kd
-
-
-
-    
-    
-
-
+% %Discrte time  LQI using the sampling time
+ [Kd,Ss,Ee] = dlqr(Aid,Bid, Q,R) ;
+    Kd
 
   
 
