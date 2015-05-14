@@ -76,6 +76,7 @@ b=1e-9;
 Iz= 0.217e-6;
 L=  0.046;
 k= 2.75e-11;
+k= 2.356e-4;
 
 
 
@@ -133,7 +134,7 @@ Bid= [sysd.b; zeros(3,4)];
 
 %Weights 
 %inputs  weight
-r= 1e-9 *[ 1 1 1 1]; 
+r= 1 *[ 1 1 1 1]; 
 R=diag(r);
 
 %States weights
@@ -146,9 +147,9 @@ Q(3,3)= Q(3,3)*0;  %yaw rate
 Q(4,4)= Q(4,4)*0;  %roll
 Q(5,5)= Q(5,5)*0;  %pitch
  
-Q(6,6)= 1e1;    %yaw rate
-Q(7,7)= 1e6;    %roll
-Q(8,8)= 1e6;   %pitch
+Q(6,6)= 1e7;    %yaw rate
+Q(7,7)= 1e3;    %roll
+Q(8,8)= 1e3;   %pitch
 
 
 %%
