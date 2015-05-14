@@ -76,7 +76,7 @@ b=1e-9;
 Iz= 0.217e-6;
 L=  0.046;
 k= 2.75e-11;
-k= 2.356e-4;
+% k= 2.356e-4;
 
 
 
@@ -134,7 +134,7 @@ Bid= [sysd.b; zeros(3,4)];
 
 %Weights 
 %inputs  weight
-r= 1 *[ 1 1 1 1]; 
+r= 1 *[ 1 1 1 1]*1e-3; 
 R=diag(r);
 
 %States weights
@@ -143,21 +143,37 @@ Q= eye(8);
 Q(1,1)= 0;    
 Q(2,2)= 0;
 
-Q(3,3)= Q(3,3)*0;  %yaw rate
-Q(4,4)= Q(4,4)*0;  %roll
-Q(5,5)= Q(5,5)*0;  %pitch
+Q(3,3)= Q(3,3)*10;  %yaw rate
+Q(4,4)= Q(4,4)*10;  %roll
+Q(5,5)= Q(5,5)*10;  %pitch
  
-Q(6,6)= 1e7;    %yaw rate
-Q(7,7)= 1e3;    %roll
-Q(8,8)= 1e3;   %pitch
+Q(6,6)= 1e3;    %yaw rate
+Q(7,7)= 1e9;    %roll
+Q(8,8)= 1e9;   %pitch
 
 
 %%
 % %Discrte time  LQI using the sampling time
- [Kd,Ss,Ee] = dlqr(Aid,Bid, Q,R) ;
-    Kd
+[Kd,Ss,Ee] = dlqr(Aid,Bid, Q,R) ;
+Kd
 
-  
+%%
+
+%% Compile and flush the Crazyflie code
+clc
+writeC(-Kd, eye(3));
+
+% Daniel
+cd ~/CrazyFlieStuff/crazyflie-firmware/ 
+system('./run.sh');
+cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_LQI_4motors/
+
+
+% Raman
+% cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
+% system('./run.sh');
+% cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+
 
 
     

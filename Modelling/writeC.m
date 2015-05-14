@@ -1,9 +1,9 @@
 function writeC(K, Kr)
 
 % Daniel
-system('rm -rf ~/CrazyFlieStuff/crazy//modules/src/matrix.c');
-system('touch ~/CrazyFlieStuff/crazy//modules/src/matrix.c');
-f = fopen('~/CrazyFlieStuff/crazy//modules/src/matrix.c', 'w');
+system('rm -rf ~/CrazyFlieStuff/crazyflie-firmware/modules/src/matrix.c');
+system('touch ~/CrazyFlieStuff/crazyflie-firmware/modules/src/matrix.c');
+f = fopen('~/CrazyFlieStuff/crazyflie-firmware/modules/src/matrix.c', 'w');
 % cd ~/CrazyFlieStuff/crazy/ % Daniel
 
 
