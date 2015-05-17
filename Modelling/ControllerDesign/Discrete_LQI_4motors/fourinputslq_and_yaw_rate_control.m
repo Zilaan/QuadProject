@@ -134,7 +134,7 @@ Bid= [sysd.b; zeros(3,4)];
 
 %Weights 
 %inputs  weight
-r= 1 *[ 1 1 1 1]*1e-3; 
+r= 1 *[ 1 1 1 1];
 R=diag(r);
 
 %States weights
@@ -143,13 +143,13 @@ Q= eye(8);
 Q(1,1)= 0;    
 Q(2,2)= 0;
 
-Q(3,3)= Q(3,3)*10;  %yaw rate
-Q(4,4)= Q(4,4)*10;  %roll
-Q(5,5)= Q(5,5)*10;  %pitch
+Q(3,3)= Q(3,3)*0;  %yaw rate
+Q(4,4)= Q(4,4)*0;  %roll
+Q(5,5)= Q(5,5)*0;  %pitch
  
-Q(6,6)= 1e3;    %yaw rate
-Q(7,7)= 1e9;    %roll
-Q(8,8)= 1e9;   %pitch
+Q(6,6)= 1e1;    %yaw rate
+Q(7,7)= 1e7;    %roll
+Q(8,8)= 1e7;   %pitch
 
 
 %%
@@ -157,11 +157,9 @@ Q(8,8)= 1e9;   %pitch
 [Kd,Ss,Ee] = dlqr(Aid,Bid, Q,R) ;
 Kd
 
-%%
-
 %% Compile and flush the Crazyflie code
 clc
-writeC(-Kd, eye(3));
+writeC(-Kd/10, eye(3));
 
 % Daniel
 cd ~/CrazyFlieStuff/crazyflie-firmware/ 
