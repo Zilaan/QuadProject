@@ -37,3 +37,4 @@
 tags
 *.vim
 *.autosave
+.DS_Store
