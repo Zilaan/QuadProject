@@ -25,7 +25,7 @@ I = diag([Ix, Iy, Iz]);
 % T_th = L*k*(w2 + w3 - w1 - w4);
 % T_ps = b*(w1 - w2 + w3 - w4);
 
-T_ph = L*k*(w3 + w4 - w1 - w2); % New correct model
+T_ph = -L*k*(w3 + w4 - w1 - w2); % New correct model
 T_th = L*k*(w2 + w3 - w1 - w4);
 T_ps = b*(-w1 + w2 - w3 + w4);
 
@@ -70,7 +70,7 @@ Iy = 0.14e-6;
 Iz = 0.217e-6;
 L =  0.046;
 k = 2.3499e-9;
-b = 1e-9;
+b = 1.1999e-9;
 A = eval(As);
 B = eval(Bs);
 % C= [0 0 1 0 0 0;0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
@@ -107,30 +107,35 @@ R = diag(phi);
 
 Q(1,1) = 0;
 Q(2,2) = 0;
-Q(3,3) = Q(3,3)*1e3;  % Yaw rate
-Q(4,4) = Q(4,4)*1e9;  % Roll
-Q(5,5) = Q(5,5)*1e9;  % Pitch
+Q(3,3) = Q(3,3)*1e7;  % Yaw rate
+Q(4,4) = Q(4,4)*1e6;  % Roll
+Q(5,5) = Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
-[Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R) ;
-Kd
+[Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R);
 Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
 
 %% Compile and flash the Crazyflie code
 clc
 user = 'Raman';
-writeC(-Kd, Kr_d, user);
+if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
+    writeC(-Kd, Kr_d, user);
+end
 
 if strcmp(user, 'Daniel')
     % Daniel
     cd ~/CrazyFlieStuff/crazyflie-firmware/ 
     system('./run.sh');
     cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
-else
+elseif strcmp(user, 'Raman')
     % Raman
     cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
     system('./run.sh');
     cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+else
+    disp('============================================')
+    disp('No upload')
+    disp('============================================')
 end
