@@ -129,6 +129,8 @@ float controlSig[4] = {0,
                              0,
                              0}; // Control signal (u)
 
+int iter = 0;
+
 #define TO_RAD 0.01745329251
 
 // Baro variables
@@ -268,9 +270,23 @@ static void stabilizerTask(void* param)
         states[4] = (eulerPitchDesired - eulerPitchActual) * TO_RAD;
 
         // Calculate control signal
-        matrixMultiply(controlSig, kMatrix, states, 4, 6, 6, 1);
-        //for(i = 0; i < ; i++)
-          //controlSig[0] = controlSig[0] + kMatrix[0*]*states[i];
+        //matrixMultiply(controlSig, kMatrix, states, 4, 6, 6, 1);
+        
+        for(iter = 0; iter < 4; iter++)
+          controlSig[iter] = 0.0f;
+
+        for(iter = 0; iter < 5; iter++)
+          controlSig[0] = controlSig[0] + kMatrix[0*5 + iter]*states[iter];
+
+        for(iter = 0; iter < 5; iter++)
+          controlSig[1] = controlSig[1] + kMatrix[1*5 + iter]*states[iter];
+
+        for(iter = 0; iter < 5; iter++)
+          controlSig[2] = controlSig[2] + kMatrix[2*5 + iter]*states[iter];
+
+        for(iter = 0; iter < 5; iter++)
+          controlSig[3] = controlSig[3] + kMatrix[3*5 + iter]*states[iter];
+
 
 
 

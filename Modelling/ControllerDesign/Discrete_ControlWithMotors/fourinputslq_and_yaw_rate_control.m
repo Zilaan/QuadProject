@@ -108,8 +108,8 @@ R = diag(phi);
 Q(1,1) = 0;
 Q(2,2) = 0;
 Q(3,3) = Q(3,3)*1e7;  % Yaw rate
-Q(4,4) = Q(4,4)*1e6;  % Roll
-Q(5,5) = Q(5,5)*1e6;  % Pitch
+Q(4,4) = 5*Q(4,4)*1e6;  % Roll
+Q(5,5) = 5*Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
@@ -119,7 +119,7 @@ Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate
 
 %% Compile and flash the Crazyflie code
 clc
-user = 'Raman';
+user = 'Dani';
 if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
     writeC(-Kd, Kr_d, user);
 end

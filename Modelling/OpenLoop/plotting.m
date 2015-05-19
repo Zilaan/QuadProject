@@ -2,6 +2,8 @@
 
 clc
 
+g = 10; % Gain for input torques
+
 sim('Three_torques_inputs.slx');
 
 nonlin_vel = squeeze(nonlin_vel);
@@ -42,56 +44,69 @@ figure(1)
 clf
 hold on
 
+fz1 = 14;
+fz2 = 18;
+
 subplot(3, 2, 1);
-plot(t, phi_l);
-title('$\phi$', 'Interpreter', 'Latex')
-xlabel('Time [s]');
-ylabel('Angle [rad]');
+p1 = plot(t, phi_l);
+title('$\phi$', 'Interpreter', 'Latex','FontSize', fz2)
+xlabel('Time [s]','FontSize',fz1);
+ylabel('Angle [rad]','FontSize',fz1);
 subplot(3, 2, 3);
 plot(t, theta_l);
-title('$\theta$', 'Interpreter', 'Latex')
-xlabel('Time [s]');
-ylabel('Angle [rad]');
+title('$\theta$', 'Interpreter', 'Latex','FontSize',fz2)
+xlabel('Time [s]','FontSize', fz1);
+ylabel('Angle [rad]','FontSize', fz1);
 subplot(3, 2, 5);
 plot(t, psi_l);
-title('$\psi$', 'Interpreter', 'Latex')
-xlabel('Time [s]');
-ylabel('Angle [rad]');
+title('$\psi$', 'Interpreter', 'Latex','FontSize', fz2)
+xlabel('Time [s]','FontSize', fz1);
+ylabel('Angle [rad]','FontSize', fz1);
 
-% figure(2)
-% clf
-% hold on
+
+
+h1 = gcf;
+h1.Position(3) = 720;
+h1.Position(4) = 390;
+
 subplot(3, 2, 2);
 plot(t, phi_nl);
-xlabel('Time [s]');
-ylabel('Angle [rad]');
-title('$\phi$', 'Interpreter', 'Latex')
+xlabel('Time [s]','FontSize', fz1);
+ylabel('Angle [rad]','FontSize', fz1);
+title('$\phi$', 'Interpreter', 'Latex','FontSize', fz2)
 subplot(3, 2, 4);
 plot(t, theta_nl);
-xlabel('Time [s]');
-ylabel('Angle [rad]');
-title('$\theta$', 'Interpreter', 'Latex')
+xlabel('Time [s]','FontSize', fz1);
+ylabel('Angle [rad]','FontSize', fz1);
+title('$\theta$', 'Interpreter', 'Latex','FontSize', fz2)
 subplot(3, 2, 6);
 plot(t, psi_nl);
-xlabel('Time [s]');
-ylabel('Angle [rad]');
-title('$\psi$', 'Interpreter', 'Latex')
+xlabel('Time [s]','FontSize', fz1);
+ylabel('Angle [rad]','FontSize', fz1);
+title('$\psi$', 'Interpreter', 'Latex','FontSize', fz2)
 
 figure(3)
 clf
 hold on
 subplot(3, 1, 1);
 plot(t, p_in);
-xlabel('Time [s]');
-ylabel('Torque [Nm]');
-title('$\tau_p$', 'Interpreter', 'Latex')
+xlabel('Time [s]', 'FontSize', fz1);
+ylabel('Torque [Nm]', 'FontSize', fz1);
+title('$\tau_p$', 'Interpreter', 'Latex', 'FontSize', fz2)
 subplot(3, 1, 2);
 plot(t, q_in);
-xlabel('Time [s]');
-ylabel('Torque [Nm]');
-title('$\tau_q$', 'Interpreter', 'Latex')
+xlabel('Time [s]', 'FontSize', fz1);
+ylabel('Torque [Nm]', 'FontSize', fz1);
+title('$\tau_q$', 'Interpreter', 'Latex', 'FontSize', fz2)
+
+axis([0, 14, 0, 1.5*10^(-7)])
+
 subplot(3, 1, 3);
 plot(t, r_in);
-xlabel('Time [s]');
-ylabel('Torque [Nm]');
-title('$\tau_r$', 'Interpreter', 'Latex')
+xlabel('Time [s]', 'FontSize', fz1);
+ylabel('Torque [Nm]', 'FontSize', fz1);
+title('$\tau_r$', 'Interpreter', 'Latex', 'FontSize', fz2)
+
+h2 = gcf;
+h2.Position(3) = 720;
+h2.Position(4) = 390;
