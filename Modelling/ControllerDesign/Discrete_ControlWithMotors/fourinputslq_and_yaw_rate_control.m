@@ -132,5 +132,6 @@ else
     % Raman
     cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
     system('./run.sh');
+    cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
 end
-cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+
