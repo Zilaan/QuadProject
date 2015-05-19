@@ -120,15 +120,17 @@ Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate
 
 %% Compile and flash the Crazyflie code
 clc
-writeC(-Kd, Kr_d);
+user = 'Raman';
+writeC(-Kd, Kr_d, user);
 
-% Daniel
-% cd ~/CrazyFlieStuff/crazyflie-firmware/ 
-% system('./run.sh');
-% cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
-
-
-% Raman
-cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
-system('./run.sh');
+if strcmp(user, 'Daniel')
+    % Daniel
+    cd ~/CrazyFlieStuff/crazyflie-firmware/ 
+    system('./run.sh');
+    cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
+else
+    % Raman
+    cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
+    system('./run.sh');
+end
 cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
