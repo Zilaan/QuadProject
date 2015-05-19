@@ -107,9 +107,9 @@ R = diag(phi);
 
 Q(1,1) = 1e3;
 Q(2,2) = 1e3;
-Q(3,3) = Q(3,3)*1e7;  % Yaw rate
-Q(4,4) = Q(4,4)*1e7;  % Roll
-Q(5,5) = Q(5,5)*1e7;  % Pitch
+Q(3,3) = Q(3,3)*1e5;  % Yaw rate
+Q(4,4) = Q(4,4)*1e6;  % Roll
+Q(5,5) = Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
@@ -129,6 +129,6 @@ writeC(-Kd, Kr_d);
 
 
 % Raman
-% cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
-% system('./run.sh');
-% cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
+system('./run.sh');
+cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
