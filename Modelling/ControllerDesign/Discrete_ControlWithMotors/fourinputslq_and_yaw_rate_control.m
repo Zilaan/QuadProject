@@ -119,7 +119,7 @@ Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate
 
 %% Compile and flash the Crazyflie code
 clc
-user = 'Raman';
+user = 'Dani';
 if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
     writeC(-Kd, Kr_d, user);
 end
