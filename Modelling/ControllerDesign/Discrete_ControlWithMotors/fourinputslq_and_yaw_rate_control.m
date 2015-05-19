@@ -25,7 +25,7 @@ I = diag([Ix, Iy, Iz]);
 % T_th = L*k*(w2 + w3 - w1 - w4);
 % T_ps = b*(w1 - w2 + w3 - w4);
 
-T_ph = -L*k*(w3 + w4 - w1 - w2); % New correct model
+T_ph = L*k*(w3 + w4 - w1 - w2); % New correct model
 T_th = L*k*(w2 + w3 - w1 - w4);
 T_ps = b*(-w1 + w2 - w3 + w4);
 
@@ -105,11 +105,11 @@ phi = 1e-2*[1 1 1 1 ];
 Q = (Cc'*Cc); 
 R = diag(phi);
 
-Q(1,1) = 0;
-Q(2,2) = 0;
+Q(1,1) = 1e7;
+Q(2,2) = 1e7;
 Q(3,3) = Q(3,3)*1e7;  % Yaw rate
-Q(4,4) = Q(4,4)*1e6;  % Roll
-Q(5,5) = Q(5,5)*1e6;  % Pitch
+Q(4,4) = 5*Q(4,4)*1e6;  % Roll
+Q(5,5) = 5*Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
