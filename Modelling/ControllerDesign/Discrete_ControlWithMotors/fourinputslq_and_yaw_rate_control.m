@@ -118,9 +118,23 @@ Q(5,5) = 9*Q(5,5)*1e6;  % Pitch
 
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
-
+Cc1 = [1 1 0 0 0;0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1 ];
 [Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R);
-Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)) % Reference traking for yaw rate, roll and pitch 
+
+
+Kd
+%%
+%KR calculation multiple solution so we need to use pinv 
+%reffered to:   http://www.academia.edu/6945404/Undergraduate_Lecture_Notes_on_LQG_LQR_controller_design
+%note the differnce we are in discret so I modifed the equation from the
+%PDF to match a discrete model :)
+FF = pinv ([ (Aa-eye(5)) Bb;Cc zeros(3,4)]);
+m=4; l=3; n=5;
+F= FF(1:n, (size(FF,2)-l+1):size(FF,2));
+N= FF((size(FF,1)-m+1):size(FF,1), (size(FF,2)-l+1):size(FF,2) );
+
+Kr= (Kd*F +N)
+ 
 
 % %% Compile and flash the Crazyflie code
 % clc
