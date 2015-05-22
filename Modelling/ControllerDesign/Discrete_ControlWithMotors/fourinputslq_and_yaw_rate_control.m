@@ -111,31 +111,36 @@ Q(3,3) = Q(3,3)*1e7;  % Yaw rate
 Q(4,4) = 9*Q(4,4)*1e6;  % Roll
 Q(5,5) = 9*Q(5,5)*1e6;  % Pitch
 
+
+
+
+
+
 % Selector matrix, to exclude the yaw from the closed loop system
 Cs = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0;  0 0 0 1 0 0;0 0 0 0 1 0];
 
 [Kd,Sd,Ed] = dlqr(Aa,Bb,Q,R);
-Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)); % Reference traking for yaw rate, roll and pitch 
+Kr_d = -inv(Cc*inv(Aa-Bb*Kd-eye(5))*Bb(:,2:4)) % Reference traking for yaw rate, roll and pitch 
 
-%% Compile and flash the Crazyflie code
-clc
-user = 'Raman';
-if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
-    writeC(-Kd, Kr_d, user);
-end
-
-if strcmp(user, 'Daniel')
-    % Daniel
-    cd ~/CrazyFlieStuff/crazyflie-firmware/ 
-    system('./run.sh');
-    cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
-elseif strcmp(user, 'Raman')
-    % Raman
-    cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
-    system('./run.sh');
-    cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
-else
-    disp('============================================')
-    disp('No upload')
-    disp('============================================')
-end
+% %% Compile and flash the Crazyflie code
+% clc
+% user = 'Raman';
+% if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
+%     writeC(-Kd, Kr_d, user);
+% end
+% 
+% if strcmp(user, 'Daniel')
+%     % Daniel
+%     cd ~/CrazyFlieStuff/crazyflie-firmware/ 
+%     system('./run.sh');
+%     cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
+% elseif strcmp(user, 'Raman')
+%     % Raman
+%     cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
+%     system('./run.sh');
+%     cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+% else
+%     disp('============================================')
+%     disp('No upload')
+%     disp('============================================')
+% end
