@@ -136,25 +136,25 @@ N= FF((size(FF,1)-m+1):size(FF,1), (size(FF,2)-l+1):size(FF,2) );
 Kr= (Kd*F +N)
  
 
-% %% Compile and flash the Crazyflie code
-% clc
-% user = 'Raman';
-% if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
-%     writeC(-Kd, Kr_d, user);
-% end
-% 
-% if strcmp(user, 'Daniel')
-%     % Daniel
-%     cd ~/CrazyFlieStuff/crazyflie-firmware/ 
-%     system('./run.sh');
-%     cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
-% elseif strcmp(user, 'Raman')
-%     % Raman
-%     cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
-%     system('./run.sh');
-%     cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
-% else
-%     disp('============================================')
-%     disp('No upload')
-%     disp('============================================')
-% end
+%% Compile and flash the Crazyflie code
+clc
+user = 'Raman';
+if strcmp(user, 'Daniel') || strcmp(user, 'Raman')
+    writeC(-Kd, -Kr, user);
+end
+
+if strcmp(user, 'Daniel')
+    % Daniel
+    cd ~/CrazyFlieStuff/crazyflie-firmware/ 
+    system('./run.sh');
+    cd ~/CHALMERS/EmbeddedSystems/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors
+elseif strcmp(user, 'Raman')
+    % Raman
+    cd ~/Documents/Programmering/Chalmers/Embedded/Project/crazyflie-firmware/ % Raman
+    system('./run.sh');
+    cd ~/Documents/Programmering/Chalmers/Embedded/QuadProject/Modelling/ControllerDesign/Discrete_ControlWithMotors/
+else
+    disp('============================================')
+    disp('No upload')
+    disp('============================================')
+end
